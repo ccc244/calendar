@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>無題ドキュメント</title>
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+var today    = new Date();
+var year = today.getFullYear();
+var month = today.getMonth();
+var date = today.getDate();
+var day=today.getDay();
+
+function Day_Text (day_num) {
+	var WeekTbl = new Array("(日)","(月)","(火)","(水)","(木)","(金)","(土)");
+	return WeekTbl[day_num];
+}
+var DayName=Day_Text(day);
+
+function Month_Text (month_num){
+	var MonthTbl = new Array("1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月");
+	return MonthTbl[month_num];
+	}	
+var MonthName=Month_Text(month)
+
+
+
+
+
+document.write("<TABLE BORDER=5 BGCOLOR=WHITE width=150px height=150px>");
+document.write("<TR><TD align=center nowrap><font size=5>"+MonthName+" "+DayName+"<br>"+"<font size=15>"+date+"日"+"<br>"+);
+document.write("</TD></TR></TABLE><br>");
+
+
+
+
+
+//-->
+
+</script>
+
+
+</head>
+
+<body>
+</body>
+</html>
