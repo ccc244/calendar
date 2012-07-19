@@ -6,49 +6,110 @@
 
 <script type="text/javascript">
 
+var MyDate = new Date();
+//年取得
+var year = MyDate.getFullYear();
+//月取得
+var month = MyDate.getMonth()+1;
+//日取得
+var date =　MyDate.getDate();
+//曜日取得
+var day=MyDate.getDay();
 
-
-
-
-
-
-var today    = new Date();
-var year = today.getFullYear();
-var month = today.getMonth();
-var date = today.getDate();
-var day=today.getDay();
-
-function Day_Text (day_num) {
-	var WeekTbl = new Array("(日)","(月)","(火)","(水)","(木)","(金)","(土)");
+if(10>month){
+	month="0"+month;
+	}
+if(10>date){
+	date="0"+date;
+	}
+	
+	function Day_Text (day_num) {
+	var WeekTbl = new Array("日","月","火","水","木","金","土");
 	return WeekTbl[day_num];
 }
 var DayName=Day_Text(day);
 
-function Month_Text (month_num){
-	var MonthTbl = new Array("1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月");
-	return MonthTbl[month_num];
-	}	
-var MonthName=Month_Text(month)
+	//取得したJSONオブジェクト格納用
+	var JSONObj;
+	var JSONObj2;
 
 
+	//コールバック関数
+	function GetJSONData(ExternalObj){
+		//グローバル変数にJSONオブジェクトをセット
+		JSONObj = ExternalObj;
+	}
+		//コールバック関数
+	function GetJSONData2(ExternalObj){
+		//グローバル変数にJSONオブジェクトをセット
+		JSONObj2 = ExternalObj;
+	}
+
+	//外部ファイルに定義してあるJSONデータの記述
+ 	//スクリプトをスクリプトタグとして挿入する
+	var s = document.createElement("script");
+	//スクリプトをスクリプトタグとして挿入する
+	var s2 = document.createElement("script");
+	//Googleカレンダーのフィードアドレスを設定する
+	var url = "http://www.google.com/calendar/feeds/ja.japanese%23holiday%40group.v.calendar.google.com/public/full";
+	url = url +"?alt=json-in-script&callback=GetJSONData";
+	var url2 = "https://www.google.com/calendar/feeds/cccccc123ch%40gmail.com/public/full?alt=json-in-script&callback=GetJSONData";
+	
+	
+	//今年の1月1日から12月31日までの間で取得する
+	url = url + "&start-min=" + MyDate.getFullYear() + "-01-01" + "&start-max=" + MyDate.getFullYear() + "-12-31";
+	url2 = url2 + "&start-min=" + MyDate.getFullYear() + "-01-01" + "&start-max=" + MyDate.getFullYear() + "-12-31";
+	s.type = "text/javascript";
+	s.charset = "utf-8";
+	s.src = url;
+	s2.type = "text/javascript";
+	s2.charset = "utf-8";
+	s2.src = url2;
+	
+
+		
+	var mydate=year+"-"+month+"-"+date;
+	var x=0;
+	//スクリプトをHEADタグ内に挿入
+	document.getElementsByTagName('head')[0].appendChild(s); 
+	document.getElementsByTagName('head')[0].appendChild(s2); 
+	function test(){
+		var i = 0;
+		while(JSONObj.feed.entry[i]){
+		
+			//祝日・振替代休の日
+			if(JSONObj.feed.entry[i].gd$when[0].startTime==mydate){
+			var holiday=JSONObj.feed.entry[i].title.$t;
+			x=1;
+			document.getElementById("Blogfield").innerHTML = document.getElementById("Blogfield").innerHTML 
+						+"<TABLE BORDER=5 BGCOLOR=WHITE width=150px height=150px>"
+						+"<TR><TD align=center nowrap><font size=6>"+month+"月"+" "+DayName
+						+"<br>"+"<font size=15>"+date+"日"
+						+"<br>"+"<font size=6>"+holiday
+						+"</TD></TR></TABLE><br>";
+						
+			}
+			
+			i=i+1;
+		}
+		//平日の日
+		if(x==0){
+					document.getElementById("Blogfield").innerHTML = document.getElementById("Blogfield").innerHTML 
+						+"<TABLE BORDER=5 BGCOLOR=WHITE width=150px height=150px>"
+						+"<TR><TD align=center nowrap><font size=6>"+month+"月"+" "+DayName
+						+"<br>"+"<font size=15>"+date+"日"
+						+"</TD></TR></TABLE><br>";
+						}
+	}
 
 
-
-document.write("<TABLE BORDER=5 BGCOLOR=WHITE width=150px height=150px>");
-document.write("<TR><TD align=center nowrap><font size=5>"+MonthName+" "+DayName+"<br>"+"<font size=15>"+date+"日"+"<br>"+);
-document.write("</TD></TR></TABLE><br>");
-
-
-
-
-
-//-->
 
 </script>
 
-
 </head>
 
-<body>
+<body onload="test();">
+<div id="Blogfield">
+	</div>
 </body>
 </html>
