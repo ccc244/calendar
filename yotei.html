@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>無題ドキュメント</title>
+
+<script type="text/javascript">
+
+var MyDate = new Date();
+//年取得
+var year = MyDate.getFullYear();
+//月取得
+var month = MyDate.getMonth()+1;
+//日取得
+var date =16;
+//曜日取得
+var day=MyDate.getDay();
+
+if(10>month){
+	month="0"+month;
+	}
+if(10>date){
+	date="0"+date;
+	}
+	
+	function Day_Text (day_num) {
+	var WeekTbl = new Array("日","月","火","水","木","金","土");
+	return WeekTbl[day_num];
+}
+var DayName=Day_Text(day);
+
+	//取得したJSONオブジェクト格納用
+	var JSONObj;
+
+
+	//コールバック関数
+	function GetJSONData(ExternalObj){
+		//グローバル変数にJSONオブジェクトをセット
+		JSONObj = ExternalObj;
+	}
+
+	//外部ファイルに定義してあるJSONデータの記述
+ 	//スクリプトをスクリプトタグとして挿入する
+	var s = document.createElement("script");
+	//Googleカレンダーのフィードアドレスを設定する
+	var url = "https://www.google.com/calendar/feeds/cccccc123ch%40gmail.com/public/full?alt=json-in-script&callback=GetJSONData";
+	
+	
+	//今年の1月1日から12月31日までの間で取得する
+	url = url + "&start-min=" + MyDate.getFullYear() + "-01-01" + "&start-max=" + MyDate.getFullYear() + "-12-31";
+	s.type = "text/javascript";
+	s.charset = "utf-8";
+	s.src = url;
+	
+
+		
+	var yotei=" ";
+	var mydate=year+"-"+month+"-"+date;
+	
+	//スクリプトをHEADタグ内に挿入
+	document.getElementsByTagName('head')[0].appendChild(s); 
+
+	function test(){
+		var i = 0;
+		while(JSONObj.feed.entry[i]){
+			
+
+			if(JSONObj.feed.entry[i].gd$when[0].startTime==mydate){
+			yotei=JSONObj.feed.entry[i].title.$t;
+			document.getElementById("Blogfield").innerHTML = document.getElementById("Blogfield").innerHTML 
+						+"<TABLE BORDER=5 BGCOLOR=WHITE width=150px height=150px>"
+						+"<TR><TD align=center nowrap><font size=6>"+month+"月"+" "+DayName
+						+"<br>"+"<font size=15>"+date+"日"
+						+"<br>"+"<font size=6>"+yotei
+						+"</TD></TR></TABLE><br>";
+						
+			}
+			
+			i=i+1;
+		}
+	}
+
+
+
+</script>
+
+</head>
+
+<body onload="test();">
+<div id="Blogfield">
+	</div>
+</body>
+</html>

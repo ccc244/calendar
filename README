@@ -1,0 +1,19 @@
+日めくりカレンダー作成
+
+
+・メンバー
+　照井裕一
+
+・実装機能
+　年・月・日・曜日表示　（実装）
+　GoogleCalendarから祝日を取得して表示　（実装）
+　GoogleCalendarからその日の予定を取得して表示　（未実装）
+
+・現在
+　祝日を取得して表示はできたが、予定が表示できない。
+　予定の題名が祝日の名前と同じ　JSONObj.feed.entry[i].title.$t　で取得しているので、
+　被る。
+
+参考HP
+https://sites.google.com/site/westinthefareast/home/google-calendar/googleholiday
+
